@@ -4,141 +4,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-        >
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <!-- Include the head tags -->
-<ui:include src="/pages/include/head.xhtml"/>
+<ui:include src="/pages/include/includes/head.xhtml"/>
 
 <h:body>
 
-    <!-- Include the header -->
-    <ui:include src="/pages/include/header.xhtml"/>
 
-    <!-- Page Content -->
-    <div class="container">
+    <ui:composition template="../include/templates/commonLayout.xhtml">
 
-        <!-- Page Heading -->
-        <div class="row">
-            <div class="col-lg-10">
-                <h1 class="page-header">Recently Uploaded Pictures
-                </h1>
-            </div>
-        </div>
+        <ui:define name="content">
+            <div class="container">
 
-        <!-- /.row -->
+                <h2>Welcome to the PictureCommunity!</h2>
 
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-        </div>
-        <!-- /.row -->
+                <p>This is a compilation of the recently uploaded pictures</p>
 
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-        </div>
-        <!-- /.row -->
+                <p:galleria id="gallery" value="#{daoController.images}" var="img"
+                            panelWidth="800" panelHeight="600" frameWidth="48" frameHeight="65"
+                            effect="clip">
 
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-            <div class="col-md-3 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/750x450" alt=""/>
-                </a>
-            </div>
-        </div>
-        <!-- /.row -->
+                    <p:graphicImage id="galleryimage"
+                                    value="#{daoController.image}" title="#{img.name}"
+                                    alt="#{img.name}">
+                        <f:param name="id" value="#{img.id}"/>
+                    </p:graphicImage>
+                </p:galleria>
 
-        <hr/>
-
-        <!-- Pagination -->
-        <div class="row text-center">
-            <div class="col-lg-12">
-                <ul class="pagination">
-                    <li>
-                        <a href="#">&#xAB;</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
-                    <li>
-                        <a href="#">&#xBB;</a>
-                    </li>
-                </ul>
             </div>
-        </div>
-        <!-- /.row -->
+            <!-- /.container -->
+        </ui:define>
 
-        <!-- Include the footer -->
-        <ui:include src="/pages/include/footer.xhtml"/>
-
-    </div>
-    <!-- /.container -->
+    </ui:composition>
 
 </h:body>
 
