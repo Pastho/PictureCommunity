@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-        >
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <ui:include src="/pages/include/includes/head.xhtml"></ui:include>
 
@@ -22,20 +23,49 @@
 
 
                 <!-- Form -->
-                <form role="form" id="login" method="post" action="/j_spring_security_check">
+                <h:form id="form">
 
-                    <div class="form-group">
-                        <label for="inputUsername">Username</label>
-                        <input type="text" class="form-control" id="inputUsername" placeholder="Enter username"/>
-                    </div>
+                    <p:panel id="panel" header="Name" style="margin-bottom:10px;">
+                        <p:messages id="messages"/>
+                        <h:panelGrid columns="3">
 
-                    <div class="form-group">
-                        <label for="inputPassword">Password</label>
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Enter password"/>
-                    </div>
+                            <h:outputLabel for="inputUsername" value="Username:"/>
+                            <p:inputText id="inputUsername"
+                                         value="#{registrationController.inputUsername}" required="true"
+                                         label="Username"
+                                         validatorMessage="Entered username should contain at least six characters">
+                                <f:validateLength minimum="6"/>
+                            </p:inputText>
+                            <p:message for="inputUsername"/>
 
-                    <input type="submit" class="btn btn-default" value="Login"/>
-                </form>
+                            <h:outputLabel for="inputEmail" value="EMail:"/>
+                            <p:inputText id="inputEmail"
+                                         value="#{registrationController.inputEmail}" required="true" label="Email"
+                                         validatorMessage="Entered Email is not valid">
+                                <f:validateRegex
+                                        pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)"/>
+                            </p:inputText>
+                            <p:message for="inputEmail"/>
+
+                            <h:outputLabel for="inputPassword" value="Password:"/>
+                            <p:inputText id="inputPassword"
+                                         value="#{registrationController.inputPassword}" required="true"
+                                         type="password"
+                                         label="Password"
+                                         validatorMessage="Entered password should contain at least six characters">
+                                <f:validateLength minimum="6"/>
+
+                            </p:inputText>
+                            <p:message for="inputPassword"/>
+
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <p:commandButton value="Register" update="panel" id="ajax"
+                                     actionListener="#{registrationController.registerUser}"
+                                     styleClass="ui-priority-primary"/>
+
+                </h:form>
 
             </div>
             <!-- /.container -->

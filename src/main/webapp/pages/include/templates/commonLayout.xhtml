@@ -25,6 +25,20 @@
 <h:outputScript library="js" name="jquery-2.1.1.min.js"/>
 <h:outputScript library="js" name="bootstrap.min.js"/>
 
+<script>
+    $(document).ready(function () {
+
+        // Variables
+        var containerWidth = $(".container").width();
+
+        // Change the width and height of the picture box;
+        $('#gallery').width(containerWidth);
+        $('.ui-galleria-panel-wrapper').width(containerWidth);
+
+        console.log(containerWidth);
+    });
+</script>
+
 </body>
 
 </html>
