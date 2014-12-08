@@ -8,57 +8,30 @@
     <link type="text/css" href="/faces/resources/css/bootstrap.min.css" rel="stylesheet">
     <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
     <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(function(){
+            $("#header").load("header.html");
+        });
+    </script>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" id="start" href="welcome.html">PictureCommunity</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a id="view" href="view.html">View Pictures</a></li>
-                    <li><a id="upload" href="upload.html">Upload Pictures</a></li>
-                </ul>
 
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a id="logut" href="../public/start.html">Logout</a></li>
-                    </ul>
-                    <form class="navbar-form navbar-right" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search"/>
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </nav>
-
+    <div id="header"></div>
 
     <div class="container">
         <div class="starter-template">
-            <h2>Here you can see your latest pictures!</h2>
+            <h2>Here you can see your latest pictures and those of your friends!</h2>
         </div>
-    </div>
-
-
-    <!-- Footer -->
-    <div class="container">
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <hr/>
         <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &#xA9; by Thomas Pasberg &#x26; Luca Petrusch</p>
-            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th06.deviantart.net/fs70/200H/i/2010/053/2/a/grace_in_the_garden_by_Pretty_As_A_Picture.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th09.deviantart.net/fs50/200H/f/2009/333/5/f/5fb7aa2a247349b40a2587e34bbf3574.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th06.deviantart.net/fs70/200H/f/2010/053/a/d/adb58d5317a01f82605293bf25a8465d.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th07.deviantart.net/fs51/200H/f/2009/332/4/d/4dd5d174929a694952187c8875d7656f.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th07.deviantart.net/fs51/200H/f/2009/333/9/b/widower_by_Pretty_As_A_Picture.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th03.deviantart.net/fs24/200H/f/2009/251/2/4/curves_by_Pretty_As_A_Picture.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th07.deviantart.net/fs51/200H/f/2009/272/8/5/wind_kept_by_Pretty_As_A_Picture.jpg" /></div>
+            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th04.deviantart.net/fs51/200H/f/2009/332/3/4/34bc70b5fa68117620d25a57087dbacb.jpg" /></div>
+
         </div>
     </div>
 

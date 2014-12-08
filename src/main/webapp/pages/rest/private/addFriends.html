@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>PictureCommunity</title>
+    <script type="text/javascript" src="/faces/resources/js/jquery-2.0.1.js"></script>
+    <script type="text/javascript" src="/faces/resources/js/bootstrap.min.js"></script>
+    <link type="text/css" href="/faces/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
+    <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
+    <script type="text/javascript">
+        $(function(){
+            $("#header").load("header.html");
+        });
+
+        <!-- Sucht den Anwender, dessen Anmeldenamen die Zeichenkette name enthaelt. -->
+        function findUsers(name) {
+            $.getJSON('/PictureCommunity/REST/user/name/' + name, {}, function(data) {
+                $.each(data, function(key, val) {
+                    dumpData(val);
+                });
+            });
+        }
+
+        <!-- Sucht den Anwender mit der uebergebenen Mailadresse. -->
+        function findUser(mailAddress) {
+            $.getJSON('/PictureCommunity/REST/user/mailaddress/' + mailAddress, {}, function(data) {
+                dumpData(data);
+            });
+        }
+    </script>
+</head>
+<body>
+<div id="header"></div>
+
+<div class="container">
+    <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Add a new friend</h2>
+        <input type="text" id="inputName" class="form-control" placeholder="Name" autofocus>
+        <input type="email" id="inputEmail" class="form-control" placeholder=".. or Email address" autofocus>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="todo();">Search</button>
+        <br />
+        <label for="result">Results:</label>
+        <textarea class="form-control" rows="3" id="result"></textarea>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="todo();">Add</button>
+    </form>
+</div>
+
+</body>
+</html>
