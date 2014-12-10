@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-        >
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <ui:include src="/pages/include/includes/head.xhtml"></ui:include>
 
@@ -16,26 +17,31 @@
         <ui:define name="content">
             <div class="container">
 
-                <h2>Login</h2>
-
-                <hr/>
-
-
                 <!-- Form -->
-                <form role="form" id="login" method="post" action="/j_spring_security_check">
+                <h:form>
+                    <p:panel id="panel" header="Login" resizable="false">
+                        <p:messages id="messages"/>
+                        <h:panelGrid columns="3" cellpadding="5">
 
-                    <div class="form-group">
-                        <label for="inputUsername">Username</label>
-                        <input type="text" class="form-control" id="inputUsername" placeholder="Enter username"/>
-                    </div>
+                            <h:outputLabel for="inputUsername" value="Benutzername:"/>
+                            <p:inputText id="inputUsername" value="#{loginController.inputUsername}" required="true"
+                                         label="Benutzername"
+                                         validatorMessage="Eingegebener Benutzername ist nicht korrekt"/>
+                            <p:message for="inputUsername"/>
 
-                    <div class="form-group">
-                        <label for="inputPassword">Password</label>
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Enter password"/>
-                    </div>
+                            <h:outputLabel for="inputPassword" value="Passwort:"/>
+                            <p:password id="inputPassword" value="#{loginController.inputPassword}" required="true"
+                                        label="Passwort"
+                                        validatorMessage="Eingegebenes Passwort ist nicht korrekt"/>
+                            <p:message for="inputPassword"/>
+                            <f:facet name="footer">
+                                <p:commandButton value="Login" update="panel"
+                                                 actionListener="#{loginController.login}"/>
 
-                    <input type="submit" class="btn btn-default" value="Login"/>
-                </form>
+                            </f:facet>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
 
             </div>
             <!-- /.container -->

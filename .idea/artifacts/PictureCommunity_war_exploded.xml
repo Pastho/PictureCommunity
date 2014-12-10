@@ -25,6 +25,8 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-aspects:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:3.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:3.2.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:3.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.glassfish:javax.faces:2.2.8" />
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:5.0" />
           <element id="library" level="project" name="Maven: org.primefaces.themes:all-themes:1.0.10" />
@@ -36,7 +38,7 @@
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.4.1" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.1" />
           <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.1" />
-          <element id="library" level="project" name="Maven: net.coobird:thumbnailator:0.4.7" />
+          <element id="library" level="project" name="Maven: net.coobird:thumbnailator:0.4.8" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-simple:1.7.7" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
           <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />

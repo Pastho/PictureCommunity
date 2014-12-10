@@ -20,16 +20,15 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-
 /**
  * Author: Thomas Pasberg
- * Created: 16.10.2014
+ * Created: 10.12.2014
  */
 
 @Component
 @Scope("session")
 @Qualifier("registerController")
-public class RegistrationController {
+public class LoginController {
 
     @Autowired
     private UserDAO userDAO;
@@ -62,14 +61,6 @@ public class RegistrationController {
         this.inputPassword = inputPassword;
     }
 
-    public String getInputEmail() {
-        return inputEmail;
-    }
-
-    public void setInputEmail(String inputEmail) {
-        this.inputEmail = inputEmail;
-    }
-
     // ====================================================
     // End of setter and getter methods
     // ====================================================
@@ -79,11 +70,14 @@ public class RegistrationController {
      *
      * @param actionEvent
      */
-    public void registerUser(ActionEvent actionEvent) {
+    public void login(ActionEvent actionEvent) {
 
-        // create user
-        User user = new User(inputEmail, inputPassword, inputUsername, User.ROLE_USER);
-        if (userDAO.createUser(user)) {
+        FacesMessage message = null;
+
+        // get user from database
+        User user = userDAO.findUserByName(inputUsername, inputPassword);
+
+        if (user != null) {
 
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, inputPassword);
             Authentication authUser = authenticationManager.authenticate(token);
@@ -103,10 +97,15 @@ public class RegistrationController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(inputUsername + " successfully registered"));
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", inputUsername);
+            } else {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error", "An error has occurred");
+            }
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
         }
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
 }

@@ -17,51 +17,52 @@
         <ui:define name="content">
             <div class="container">
 
-                <h2>Register</h2>
-
-                <hr/>
-
-
                 <!-- Form -->
                 <h:form id="form">
-
-                    <p:panel id="panel" header="Name" style="margin-bottom:10px;">
+                    <p:panel id="panel" header="Registrieren" style="margin-bottom:10px;">
                         <p:messages id="messages"/>
-                        <h:panelGrid columns="3">
+                        <h:panelGrid columns="3" cellpadding="5">
 
-                            <h:outputLabel for="inputUsername" value="Username:"/>
+                            <h:outputLabel for="inputUsername" value="Benutzername:"/>
                             <p:inputText id="inputUsername"
                                          value="#{registrationController.inputUsername}" required="true"
-                                         label="Username"
-                                         validatorMessage="Entered username should contain at least six characters">
+                                         label="Benutzername"
+                                         validatorMessage="Der Benutzername sollte mindestens 6 Zeichen enthalten">
                                 <f:validateLength minimum="6"/>
                             </p:inputText>
                             <p:message for="inputUsername"/>
 
-                            <h:outputLabel for="inputEmail" value="EMail:"/>
+                            <h:outputLabel for="inputEmail" value="E-Mail:"/>
                             <p:inputText id="inputEmail"
-                                         value="#{registrationController.inputEmail}" required="true" label="Email"
-                                         validatorMessage="Entered Email is not valid">
+                                         value="#{registrationController.inputEmail}" required="true" label="E-Mail"
+                                         validatorMessage="Das Format der eingegebenen E-Mail Adresse ist nicht korrekt">
                                 <f:validateRegex
                                         pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)"/>
                             </p:inputText>
                             <p:message for="inputEmail"/>
 
-                            <h:outputLabel for="inputPassword" value="Password:"/>
-                            <p:inputText id="inputPassword"
-                                         value="#{registrationController.inputPassword}" required="true"
-                                         type="password"
-                                         label="Password"
-                                         validatorMessage="Entered password should contain at least six characters">
+                            <h:outputLabel for="inputPassword" value="Passwort:"/>
+                            <p:password id="inputPassword"
+                                        value="#{registrationController.inputPassword}" required="true"
+                                        type="password"
+                                        label="Passwort"
+                                        match="retypePassword"
+                                        feedback="false"
+                                        validatorMessage="Das Passwort sollte mindestens aus 6 Zeichen bestehen">
                                 <f:validateLength minimum="6"/>
 
-                            </p:inputText>
+                            </p:password>
                             <p:message for="inputPassword"/>
+
+                            <h:outputLabel for="retypePassword" value="Passwort wiederholen:"/>
+                            <p:password id="retypePassword" value="#{registrationController.inputPassword}"
+                                        feedback="false"
+                                        label="Retype Password 2" required="true"/>
 
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="Register" update="panel" id="ajax"
+                    <p:commandButton value="Abschließen" update="panel" id="ajax"
                                      actionListener="#{registrationController.registerUser}"
                                      styleClass="ui-priority-primary"/>
 
