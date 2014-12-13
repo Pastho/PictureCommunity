@@ -11,6 +11,15 @@
     <script type="text/javascript">
         $(function(){
             $("#header").load("header.html");
+
+            <!-- Ermittelt alle Freunde des Anwenders mit dem uebergebenen vollstaendigen Anmeldenamen. -->
+            function friendsOf(name) {
+                $.getJSON('/PictureCommunity/REST/user/friends/' + name, {}, function(data) {
+                    $.each(data, function(key, val) {
+                        dumpData(val);
+                    });
+                });
+            }
         });
 
     </script>

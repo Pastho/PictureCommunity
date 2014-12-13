@@ -11,23 +11,39 @@
     <script type="text/javascript">
         $(function(){
             $("#header").load("header.html");
-        });
 
-        <!-- Sucht den Anwender, dessen Anmeldenamen die Zeichenkette name enthaelt. -->
-        function findUsers(name) {
-            $.getJSON('/PictureCommunity/REST/user/name/' + name, {}, function(data) {
+            function dumpData(data) {
                 $.each(data, function(key, val) {
-                    dumpData(val);
+                    $("#dump").append("id = " + key + ", value = " + val + "<br/>\n");
                 });
-            });
-        }
+                $("#dump").append("----<br/>\n");
+            }
 
-        <!-- Sucht den Anwender mit der uebergebenen Mailadresse. -->
-        function findUser(mailAddress) {
-            $.getJSON('/PictureCommunity/REST/user/mailaddress/' + mailAddress, {}, function(data) {
-                dumpData(data);
+            <!-- Sucht den Anwender, dessen Anmeldenamen die Zeichenkette name enthaelt. -->
+            function findUsers(name) {
+                $.getJSON('/PictureCommunity/REST/user/name/' + name, {}, function(data) {
+                    $.each(data, function(key, val) {
+                        dumpData(val);
+                    });
+                });
+            }
+
+            <!-- Sucht den Anwender mit der uebergebenen Mailadresse. -->
+            function findUser(mailAddress) {
+                $.getJSON('/PictureCommunity/REST/user/mailaddress/' + mailAddress, {}, function(data) {
+                    dumpData(data);
+                });
+            }
+
+            $(document).on("click", "#searchButton", function(e) {
+                var password = $("#password").val();
+                var name = $("#name").val();
+                var email = $("#email").val();
+
+                register(name, password, email);
             });
-        }
+
+        });
     </script>
 </head>
 <body>
@@ -38,11 +54,11 @@
         <h2 class="form-signin-heading">Add a new friend</h2>
         <input type="text" id="inputName" class="form-control" placeholder="Name" autofocus>
         <input type="email" id="inputEmail" class="form-control" placeholder=".. or Email address" autofocus>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="todo();">Search</button>
+        <button id="searchButton" class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
         <br />
         <label for="result">Results:</label>
         <textarea class="form-control" rows="3" id="result"></textarea>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="todo();">Add</button>
+        <button id="addButton" class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
     </form>
 </div>
 

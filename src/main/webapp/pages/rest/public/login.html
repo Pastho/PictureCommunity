@@ -9,23 +9,36 @@
     <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
     <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
     <script type="text/javascript">
-        $.ajaxSetup({ cache: false });
+        $.ajaxSetup({
+            cache: false,
+            statusCode: {
+                401: function() {
+                    alert("Login fehlgeschlagen" );
+                }
+            }});
 
         $(function(){
             $("#header").load("header.html");
             $("#footer").load("footer.html");
         });
 
-
-
         <!-- Setzt den Header fuer die Basic-Athentifizierung. -->
-        function login(name, password) {
-            $.ajaxSetup({
+        function login(){
+            var password = $("#password").val();
+            var name = $("#name").val();
+            $.ajax({
                 headers: {
                     'Authorization': "Basic " + btoa(name + ":" + password)
+                },
+                statusCode: {
+                    200: function() {
+                        window.location.href = "../private/welcome.html"
+                    }
                 }
             });
         }
+
+
     </script>
 </head>
 <body>
@@ -34,17 +47,23 @@
     <div id="header"></div>
 
 
-
     <div class="container">
 
-        <form class="form-signin" role="form" action="../private/welcome.html">
+        <form class="form-signin" role="form">
             <h2 class="form-signin-heading">Login</h2>
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="todo();">Login</button>
+            <input id="name" class="form-control" placeholder="Name" required autofocus>
+            <input type="password" id="password" class="form-control" placeholder="Password" required>
+            <button type="button" id="button" class="btn btn-lg btn-primary btn-block" onclick="login()">Login</button>
+            <div class="form-group">
+                <div class="col-md-12 control">
+                    <div>
+                        Don't have an account?
+                        <a href="register.html">
+                            Sign Up Here!
+                        </a>
+                    </div>
+                </div>
+            </div>
         </form>
 
     </div>
