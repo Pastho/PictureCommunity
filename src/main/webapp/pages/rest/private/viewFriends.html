@@ -1,37 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>PictureCommunity</title>
-    <script type="text/javascript" src="/faces/resources/js/jquery-2.0.1.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/bootstrap.min.js"></script>
-    <link type="text/css" href="/faces/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
-    <script type="text/javascript">
-        $(function(){
-            $("#header").load("header.html");
-
-            <!-- Ermittelt alle Freunde des Anwenders mit dem uebergebenen vollstaendigen Anmeldenamen. -->
-            function friendsOf(name) {
-                $.getJSON('/PictureCommunity/REST/user/friends/' + name, {}, function(data) {
-                    $.each(data, function(key, val) {
-                        dumpData(val);
-                    });
-                });
-            }
-        });
-
-    </script>
 </head>
 <body>
-<div id="header"></div>
-
-<div class="container">
-    <div class="starter-template">
-        <h2>Manage your friends and see who is online</h2>
+    <div class="container">
+        <div class="starter-template">
+            <h2>Verwalte deine Freunde und sehe wer gerade online ist!</h2>
+        </div>
     </div>
-</div>
-
 </body>
 </html>

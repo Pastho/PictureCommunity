@@ -2,79 +2,84 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>PictureCommunity</title>
-    <script type="text/javascript" src="/faces/resources/js/jquery-2.0.1.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/vendor/jquery.ui.widget.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/jquery.iframe-transport.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/jquery.fileupload.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/faces/resources/js/bootstrap-filestyle.min.js"></script>
-    <link type="text/css" href="/faces/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
     <script type="text/javascript">
-        $.ajaxSetup({ cache: false });
-
-        $(function() {
-            $("#header").load("header.html");
-        });
-
         $(":file").filestyle();
 
-        function uploadImage() {
-            $("#input").fileupload({url: '/REST/newpicture', formData: function(form) {
-                var description = $("#description").val();
-                var publicBoolean = $("#publicChechbox").attr('checked');
-                return [{ name: 'description', value: description}, { name: 'public', value: publicBoolean}];
-            }});
-        }
+        $.ajaxSetup({
+            statusCode: {
+            201: function() {
+                var type = $("#publicCheckbox").prop("checked") ? "&ouml;ffentlich" : "privat";
+                bootbox.dialog({
+                    title: "Erfolg",
+                    message: "Das Bild wurde erfolgreich hochgeladen und als "+type+" markiert.",
+                    buttons: {
+                        main: {
+                            label: "Zur&uuml;ck",
+                            className: "btn-primary",
+                            callback: function () {
+                            }
+                        }
+                    }
+                });
+                }
+            },
+            cache:false
+        });
 
-        <!-- Ermittelt die Informationen zu allen Bildern, die fuer den aktuellen Anwender sichtbar sind. -->
-        function getPictureInfos(name) {
-            $.getJSON('/REST/pictures/' + name, {})
-                    .fail(function(jqxhr, textStatus, error) {
-                        $("#dump").append(error + "<br/>\n");
-                    })
-                    .done(function(data) {
-                        $.each(data, function(key, val) {
-                            dumpData(val);
-                        });
+        $(function () {
+            $('#fileupload').fileupload({
+                url: '/REST/newpicture',
+                formData: function(form) {
+                    var description = $("#description").val();
+                    var publicBoolean = $("#publicCheckbox").prop("checked");
+                    return [{ name: 'description', value: description}, { name: 'public', value: publicBoolean}];
+                },
+                success: function(){
+                  $("#body").load("private/upload.html")
+                },
+                fail: function (){
+                    bootbox.dialog({
+                        title: "Fehler",
+                        message: "Beim Hochladen des Bildes ist etwas schiefgelaufen!",
+                        buttons: {
+                            main: {
+                                label: "Zur&uuml;ck",
+                                className: "btn-primary",
+                                callback: function () {
+                                }
+                            }
+                        }
                     });
-        }
-
-        function dumpData(data) {
-            $.each(data, function(key, val) {
-                $("#result").append("id = " + key + ", value = " + val + "<br/>\n");
+                },
+                add: function (e, data) {
+                    data.context = $('<button class="btn btn-default"/>').text('Upload')
+                            .appendTo($("#uploadForm"))
+                            .click(function () {
+                                data.context = $('<p/>').text('Uploading...').replaceAll($(this));
+                                data.submit();
+                            });
+                }
             });
-            $("#result").append("----<br/>\n");
-        }
-
+        })
 
     </script>
 </head>
 <body>
 
-    <div id="header"></div>
-
     <div class="container">
-
-        <h2>Picture Upload</h2>
-
-        <form role="form">
+        <h2>Bilder hochladen</h2>
+        <form role="form" id="uploadForm">
             <div class="form-group">
-                <label for="description">Description:</label>
+                <label for="description">Kommentar:</label>
                 <input type="text" class="form-control" id="description">
             </div>
-            <input id="input" type="file" class="filestyle" data-buttonBefore="true" data-icon="false"/>
+            <input id="fileupload" name="file" type="file" class="filestyle" data-buttonBefore="true" data-icon="false" multiple="false" data-buttonText="Bild ausw&auml;hlen"/>
             <div class="checkbox">
-                <label><input id="publicCheckbox" type="checkbox"> Public</label>
+                <label><input id="publicCheckbox" type="checkbox"> &Ouml;ffentlich</label>
             </div>
             <br />
             <br />
-            <input type="button" class="btn btn-default" onclick="uploadImage();" value="Upload" />
-
-
-
         </form>
     </div>
 

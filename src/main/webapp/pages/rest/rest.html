@@ -94,7 +94,7 @@
 				img.onload = function() {
 					$("#images").empty();
 					$("#images").append(img);
-				}
+				};
 				if (width >= 1 && width < 10000) {
 					img.src = '/REST/picture/' + id + '?width=' + width + '&_timestamp=' + Math.random();
 				}

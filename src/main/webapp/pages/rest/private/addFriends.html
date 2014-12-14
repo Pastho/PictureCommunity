@@ -1,66 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>PictureCommunity</title>
-    <script type="text/javascript" src="/faces/resources/js/jquery-2.0.1.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/bootstrap.min.js"></script>
-    <link type="text/css" href="/faces/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
-    <script type="text/javascript">
-        $(function(){
-            $("#header").load("header.html");
-
-            function dumpData(data) {
-                $.each(data, function(key, val) {
-                    $("#dump").append("id = " + key + ", value = " + val + "<br/>\n");
-                });
-                $("#dump").append("----<br/>\n");
-            }
-
-            <!-- Sucht den Anwender, dessen Anmeldenamen die Zeichenkette name enthaelt. -->
-            function findUsers(name) {
-                $.getJSON('/PictureCommunity/REST/user/name/' + name, {}, function(data) {
-                    $.each(data, function(key, val) {
-                        dumpData(val);
-                    });
-                });
-            }
-
-            <!-- Sucht den Anwender mit der uebergebenen Mailadresse. -->
-            function findUser(mailAddress) {
-                $.getJSON('/PictureCommunity/REST/user/mailaddress/' + mailAddress, {}, function(data) {
-                    dumpData(data);
-                });
-            }
-
-            $(document).on("click", "#searchButton", function(e) {
-                var password = $("#password").val();
-                var name = $("#name").val();
-                var email = $("#email").val();
-
-                register(name, password, email);
-            });
-
-        });
-    </script>
 </head>
 <body>
-<div id="header"></div>
-
-<div class="container">
-    <form class="form-signin" role="form">
-        <h2 class="form-signin-heading">Add a new friend</h2>
-        <input type="text" id="inputName" class="form-control" placeholder="Name" autofocus>
-        <input type="email" id="inputEmail" class="form-control" placeholder=".. or Email address" autofocus>
-        <button id="searchButton" class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
-        <br />
-        <label for="result">Results:</label>
-        <textarea class="form-control" rows="3" id="result"></textarea>
-        <button id="addButton" class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
-    </form>
-</div>
-
+    <div class="container">
+        <form class="form-signin" role="form">
+            <h2 class="form-signin-heading">Freunde hinzuf&uuml;gen</h2>
+            <input type="text" id="inputName" class="form-control" placeholder="Name" autofocus>
+            <input type="email" id="inputEmail" class="form-control" placeholder=".. oder Email-Addresse" autofocus>
+            <button id="searchButton" class="btn btn-lg btn-primary btn-block" type="submit">Suche</button>
+            <br />
+            <label for="result">Ergebnis:</label>
+            <textarea class="form-control" rows="3" id="result"></textarea>
+            <button id="addButton" class="btn btn-lg btn-primary btn-block" type="submit">Hinzuf&uuml;gen</button>
+        </form>
+    </div>
 </body>
 </html>

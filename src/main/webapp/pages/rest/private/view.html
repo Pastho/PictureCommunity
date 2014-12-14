@@ -1,128 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>PictureCommunity</title>
-    <script type="text/javascript" src="/faces/resources/js/jquery-2.0.1.js"></script>
-    <script type="text/javascript" src="/faces/resources/js/bootstrap.min.js"></script>
-    <link type="text/css" href="/faces/resources/css/bootstrap.min.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
-    <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
     <script type="text/javascript">
-        $(document).ready(function(){
 
-            $("#header").load("header.html");
 
-            $('.img-responsive').on('click',function(){
-                var src = $(this).attr('src');
-                var img = '<img src="' + src + '" class="img-responsive"/>';
-                $('#myModal').modal();
-                $('#myModal').on('shown.bs.modal', function(){
-                    $('#myModal .modal-body').html(img);
-                });
-                $('#myModal').on('hidden.bs.modal', function(){
-                    $('#myModal .modal-body').html('');
-                });
+
+        function showPicture(data) {
+            var id = "";
+            var descr = "";
+            $.each(data, function(key, val) {
+                if (key == "id"){
+                    id = val;
+                }
+                if (key == "description"){
+                    descr = val;
+                }
             });
+            loadPicture(id, descr, 300);
+        }
 
-            <!-- Ermittelt die Informationen zu allen Bildern, die fuer den aktuellen Anwender sichtbar sind. -->
-            function getPictureInfos(name) {
-                $.getJSON('/PictureCommunity/REST/pictures/' + name, {})
-                        .fail(function(jqxhr, textStatus, error) {
-                            $("#dump").append(error + "<br/>\n");
-                        })
-                        .done(function(data) {
-                            $.each(data, function(key, val) {
-                                dumpData(val);
-                            });
+        function loadPublicImages(){
+            $.getJSON("/REST/pictures/*", {})
+                    .done(function(data) {
+                        $.each(data, function(key, val) {
+                            showPicture(val);
                         });
-            }
+                    });
+        }
 
-            <!-- Laedt ein Bild mit der uebergebenen ID und traegt es in das div-Tag mit der ID iamges ein. -->
-            <!-- Durch die Angabe eines gueltigen Breite wird das Bild auf diese Groesse gestreckt oder gestaucht. -->
-            <!-- Hat der Benutzer nicht vorher den Header fuer die Basic-Athentifizierung gesetzt, dann werden nur die oeffentlichen Bilder -->
-            <!-- beruecksichtigt. -->
-            function loadPicture(id, width) {
-                var img = document.createElement('img');
-                img.onload = function() {
-                    $("#images").empty();
-                    $("#images").append(img);
-                }
-                if (width >= 1 && width < 10000) {
-                    img.src = '/PictureCommunity/REST/picture/' + id + '?width=' + width + '&_timestamp=' + Math.random();
-                }
-                else {
-                    img.src = '/PictureCommunity/REST/picture/' + id + '?_timestamp=' + Math.random();
-                }
+        $(function() {
+            loadPublicImages();
+        });
+
+        function loadPicture(id, descr, width) {
+            var description = document.createElement("div");
+            var caption = document.createElement("h4");
+            var text = document.createTextNode(descr);
+            var div = document.createElement("div");
+            var img = document.createElement("img");
+            description.setAttribute("class","caption");
+            div.setAttribute("class","col-md-3 col-sm-4 col-xs-6");
+            img.setAttribute("class","img-responsive");
+            img.onload = function() {
+                caption.appendChild(text);
+                description.appendChild(caption);
+                div.appendChild(img);
+                div.appendChild(description);
+                $("#images").append(div);
+            };
+            if (width >= 1 && width < 10000) {
+                img.src = '/REST/picture/' + id + '?width=' + width;
             }
-        })
+            else {
+                img.src = '/REST/picture/' + id;
+            }
+        }
+
+        $(".img-responsive").on('click',function(){
+            var src = $(this).attr('src');
+            var img = '<img src="' + src + '" class="img-responsive"/>';
+            $('#myModal').modal();
+            $('#myModal').on('shown.bs.modal', function(){
+                $('#myModal .modal-body').html(img);
+            });
+            $('#myModal').on('hidden.bs.modal', function(){
+                $('#myModal .modal-body').html('');
+            });
+        });
+
     </script>
 </head>
 <body>
 
-    <div id="header"></div>
-
     <div class="container">
         <div class="starter-template">
-            <h2>See your latest pictures and those of your friends</h2>
+            <h2>Betrachte deine Bilder und die deiner Freunde</h2>
         </div>
-        <div class="row">
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th06.deviantart.net/fs70/200H/i/2010/053/2/a/grace_in_the_garden_by_Pretty_As_A_Picture.jpg" />
-                <div class="caption">
-                    <h4>Red Shadow</h4>
-                    <p>By: Susie</p>
-                </div>
-            </div>
 
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th06.deviantart.net/fs70/200H/f/2010/053/a/d/adb58d5317a01f82605293bf25a8465d.jpg" />
-                <div class="caption">
-                    <h4>Feet</h4>
-                    <p>By: Pete</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th09.deviantart.net/fs50/200H/f/2009/333/5/f/5fb7aa2a247349b40a2587e34bbf3574.jpg" />
-                <div class="caption">
-                    <h4>Seaside</h4>
-                    <p>By: Nancy</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th07.deviantart.net/fs51/200H/f/2009/332/4/d/4dd5d174929a694952187c8875d7656f.jpg" />
-                <div class="caption">
-                    <h4>Flower Power</h4>
-                    <p>By: Pete</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th07.deviantart.net/fs51/200H/f/2009/333/9/b/widower_by_Pretty_As_A_Picture.jpg" />
-                <div class="caption">
-                    <h4>Seaside 2</h4>
-                    <p>By: Nancy</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th03.deviantart.net/fs24/200H/f/2009/251/2/4/curves_by_Pretty_As_A_Picture.jpg" />
-                <div class="caption">
-                    <h4>Drowning</h4>
-                    <p>By: Yourself</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th07.deviantart.net/fs51/200H/f/2009/272/8/5/wind_kept_by_Pretty_As_A_Picture.jpg" />
-                <div class="caption">
-                    <h4>Flying</h4>
-                    <p>By: Yourself</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th04.deviantart.net/fs51/200H/f/2009/332/3/4/34bc70b5fa68117620d25a57087dbacb.jpg" />
-                <div class="caption">
-                    <h4>Glasses</h4>
-                    <p>By: Pete</p>
-                </div>
-            </div>
-        </div>
+        <div id="images" class="row"></div>
     </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
