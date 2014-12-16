@@ -2,76 +2,12 @@
 <html>
 <head lang="en">
     <script type="text/javascript">
-
-
-
-        function showPicture(data) {
-            var id = "";
-            var descr = "";
-            $.each(data, function(key, val) {
-                if (key == "id"){
-                    id = val;
-                }
-                if (key == "description"){
-                    descr = val;
-                }
-            });
-            loadPicture(id, descr, 300);
-        }
-
-        function loadPublicImages(){
-            $.getJSON("/REST/pictures/*", {})
-                    .done(function(data) {
-                        $.each(data, function(key, val) {
-                            showPicture(val);
-                        });
-                    });
-        }
-
-        $(function() {
-            loadPublicImages();
+        $(function(){
+            loadPrivateImages();
         });
-
-        function loadPicture(id, descr, width) {
-            var description = document.createElement("div");
-            var caption = document.createElement("h4");
-            var text = document.createTextNode(descr);
-            var div = document.createElement("div");
-            var img = document.createElement("img");
-            description.setAttribute("class","caption");
-            div.setAttribute("class","col-md-3 col-sm-4 col-xs-6");
-            img.setAttribute("class","img-responsive");
-            img.onload = function() {
-                caption.appendChild(text);
-                description.appendChild(caption);
-                div.appendChild(img);
-                div.appendChild(description);
-                $("#images").append(div);
-            };
-            if (width >= 1 && width < 10000) {
-                img.src = '/REST/picture/' + id + '?width=' + width;
-            }
-            else {
-                img.src = '/REST/picture/' + id;
-            }
-        }
-
-        $(".img-responsive").on('click',function(){
-            var src = $(this).attr('src');
-            var img = '<img src="' + src + '" class="img-responsive"/>';
-            $('#myModal').modal();
-            $('#myModal').on('shown.bs.modal', function(){
-                $('#myModal .modal-body').html(img);
-            });
-            $('#myModal').on('hidden.bs.modal', function(){
-                $('#myModal .modal-body').html('');
-            });
-        });
-
     </script>
 </head>
 <body>
-
     <div class="container">
         <div class="starter-template">
             <h2>Betrachte deine Bilder und die deiner Freunde</h2>

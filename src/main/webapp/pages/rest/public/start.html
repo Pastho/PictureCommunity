@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <script type="text/javascript">
-        $(function() {
-            $("#header").load("public/header.html");
+    <script>
+        $(function(){
+            loadPublicImages();
         });
 
-        $('.img-responsive').on('click',function(){
-            var src = $(this).attr('src');
-            var img = '<img src="' + src + '" class="img-responsive"/>';
-            $('#myModal').modal();
-            $('#myModal').on('shown.bs.modal', function(){
-                $('#myModal .modal-body').html(img);
-            });
-            $('#myModal').on('hidden.bs.modal', function(){
-                $('#myModal .modal-body').html('');
-            });
-        });
     </script>
-
 </head>
 <body>
 
@@ -31,16 +19,7 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://2.bp.blogspot.com/-H6MAoWN-UIE/TuRwLbHRSWI/AAAAAAAABBk/89iiEulVsyg/s400/Free%2BNature%2BPhoto.jpg" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://www.virginia.org/uploadedImages/virginiaorg/Images/OrgImages/H/HamptonConventionVisitorBureau/Grandview_Nature_Preserve.jpg?width=300&height=200&scale=upscalecanvas" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://blog.arborday.org/wp-content/uploads/2013/02/NEC1-300x200.jpg" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="http://th03.deviantart.net/fs70/200H/f/2010/256/0/9/painting_of_nature_by_dhikagraph-d2ynalq.jpg" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="/faces/resources/img/example1.jpg" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="/faces/resources/img/example2.jpg" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="/faces/resources/img/example3.jpg" /></div>
-            <div class="col-md-3 col-sm-4 col-xs-6"><img class="img-responsive" src="/faces/resources/img/example4.jpg" /></div>
-        </div>
+        <div id="images" class="row"></div>
     </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

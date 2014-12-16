@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <script type="text/javascript">
-        $(function(){
-            $("#header").load("private/header.html");
+    <script>
+        $(function() {
+            loadPublicImages();
+            $("#welcomeText").text("Willkommen " + currentName);
         });
     </script>
+
+
+
 </head>
 <body>
     <div class="container">
         <div class="starter-template">
-            <h2>Willkommen!</h2>
+            <h2 id="welcomeText"></h2>
 
-            <p>Todo..</p>
+            <p>Hier sind die neuesten als &ouml;ffentlich markierten Bilder zu sehen:</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="images" class="row">
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                </div>
+            </div>
         </div>
     </div>
 </body>

@@ -1,45 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <script type="text/javascript">
-        function register() {
-            var password = $("#password").val();
-            var name = $("#name").val();
-            var email = $("#email").val();
-            var senddata={ username : name, password : password, mailaddress: email };
-            $.post('/REST/register', senddata, function(data) {
-            });
-        }
-
+    <script>
         $.ajaxSetup({
             statusCode: {
-                201: function() {
+                201: function () {
                     bootbox.dialog({
-                        title: "Willkommen "+$("#name").val() +"!",
+                        title: "Willkommen " + $("#name").val() + "!",
                         message: "Die Registrierung war erfolgreich.",
                         buttons: {
                             success: {
                                 label: "Weiter",
                                 className: "btn-success",
                                 callback: function () {
+                                    $("#body").load("public/login.html");
                                 }
                             }
                         }
                     });
-                    $("#body").load("public/login.html");
                 },
-                409: function() {
+                409: function () {
                     bootbox.dialog({
                         title: "Fehler",
                         message: "Ein Benutzer mit diesem Namen ist bereits registriert!"
                     });
-                }
-            }
+                }}
         });
-
-
     </script>
-
 </head>
 <body>
     <div class="container">

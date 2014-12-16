@@ -13,12 +13,169 @@
     <link type="text/css" href="/faces/resources/css/starter-template.css" rel="stylesheet">
     <link type="text/css" href="/faces/resources/css/form.css" rel="stylesheet">
     <script type="text/javascript">
-        $(function(){
-            $.ajaxSetup({
-                cache: false
+
+        var currentName;
+
+        $.ajaxSetup({
+            cache: false
+        });
+
+        function login(){
+            var password = $("#password").val();
+            var name = $("#name").val();
+            $.ajax({
+                headers: {
+                    'Authorization': "Basic " + btoa(name + ":" + password)
+                },
+                statusCode: {
+                    200: function() {
+                        currentName = name;
+                        $("#body").load("private/welcome.html");
+                        $("#header").load("private/header.html");
+                        $.ajaxSetup({
+                            headers: {
+                                'Authorization': "Basic " + btoa(name + ":" + password)
+                            },
+                            statusCode: {
+                                401: function e(){}
+                            }
+                        })
+                    }
+                }}
+            );
+        }
+
+        function logout() {
+            $("#header").load("public/header.html");
+            $("#body").load("public/start.html");
+            bootbox.dialog({
+                title: "Auf Wiedersehen!",
+                message: "Sie haben sich erfolgreich abgemeldet.",
+                buttons: {
+                    success: {
+                        label: "Weiter",
+                        className: "btn-success",
+                        callback: function () {
+                            $.ajax({
+                                headers: {
+                                    'Authorization': "Basic " + btoa('' + ":" + '')
+                                }
+                            });
+                        }
+                    }
+                }
             });
+        }
+
+        function register() {
+            var password = $("#password").val();
+            var name = $("#name").val();
+            var email = $("#email").val();
+            var senddata={ username : name, password : password, mailaddress: email };
+            $.post('/REST/register', senddata, function(data) {
+
+            });
+        }
+        function loadPrivateImages(){
+            $.getJSON("/REST/pictures/"+currentName, {})
+                    .done(function(data) {
+                        $.each(data, function(key, val) {
+                            showPicture(val);
+                        });
+                    });
+        }
+
+        function loadPublicImages(){
+            $.getJSON("/REST/pictures/*", {})
+                    .done(function(data) {
+                        $.each(data, function(key, val) {
+                            showPicture(val);
+                        });
+                    });
+        }
+
+        function showPicture(data) {
+            var id = "";
+            var descr = "";
+            $.each(data, function(key, val) {
+                if (key == "id"){
+                    id = val;
+                }
+                if (key == "description"){
+                    descr = val;
+                }
+            });
+            loadPicture(id, descr, 300);
+        }
+
+        function loadPicture(id, descr, width) {
+            var description = document.createElement("div");
+            var caption = document.createElement("h4");
+            var text = document.createTextNode(descr);
+            var div = document.createElement("div");
+            var img = document.createElement("img");
+            description.setAttribute("class","caption");
+            div.setAttribute("class","col-md-3 col-sm-4 col-xs-6");
+            img.setAttribute("class","img-responsive");
+            img.onload = function() {
+                caption.appendChild(text);
+                description.appendChild(caption);
+                div.appendChild(img);
+                div.appendChild(description);
+                $("#images").append(div);
+            };
+            if (width >= 1 && width < 10000) {
+                img.src = '/REST/picture/' + id + '?width=' + width;
+            }
+            else {
+                img.src = '/REST/picture/' + id;
+            }
+        }
+
+        $(function(){
+            $(document).on("click", "#startLink", function(e) {
+                $("#body").load("public/start.html");
+            });
+            $(document).on("click", "#loginLink", function(e) {
+                $("#body").load("public/login.html");
+            });
+            $(document).on("click", "#registerLink", function(e) {
+                $("#body").load("public/register.html");
+            });
+            $(document).on("click", "#toRegistration", function(e) {
+                $("#body").load("public/register.html");
+            });
+            $(document).on("click", "#welcomeLink", function(e) {
+                $("#body").load("private/welcome.html");
+            });
+            $(document).on("click", "#viewLink", function(e) {
+                $("#body").load("private/view.html");
+            });
+            $(document).on("click", "#uploadLink", function(e) {
+                $("#body").load("private/upload.html");
+            });
+            $(document).on("click", "#viewFriendsLink", function(e) {
+                $("#body").load("private/viewFriends.html");
+            });
+            $(document).on("click", "#addFriendsLink", function(e) {
+                $("#body").load("private/addFriends.html");
+            });
+
+            $("#header").load("public/header.html");
             $("#body").load("public/start.html");
             $("#footer").load("public/footer.html");
+
+            $(document).on("click", ".img-responsive" , function () {
+                var src = $(this).attr('src');
+                var img = '<img src="' + src + '" class="img-responsive"/>';
+                $('#myModal').modal();
+                $('#myModal').on('shown.bs.modal', function () {
+                    $('#myModal .modal-body').html(img);
+                });
+                $('#myModal').on('hidden.bs.modal', function () {
+                    $('#myModal .modal-body').html('');
+                });
+            });
 
         });
     </script>

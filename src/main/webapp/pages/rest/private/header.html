@@ -1,46 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <script type="text/javascript">
-        $(document).on("click", "#welcomeLink", function(e) {
-            $("#body").load("private/welcome.html");
-        });
-        $(document).on("click", "#viewLink", function(e) {
-            $("#body").load("private/view.html");
-        });
-        $(document).on("click", "#uploadLink", function(e) {
-            $("#body").load("private/upload.html");
-        });
-        $(document).on("click", "#viewFriendsLink", function(e) {
-            $("#body").load("private/viewFriends.html");
-        });
-        $(document).on("click", "#addFriendsLink", function(e) {
-            $("#body").load("private/addFriends.html");
-        });
-
-        function logout() {
-            $("#body").load("public/start.html");
-            bootbox.dialog({
-                title: "Auf Wiedersehen!",
-                message: "Sie haben sich erfolgreich abgemeldet.",
-                buttons: {
-                    success: {
-                        label: "Weiter",
-                        className: "btn-success",
-                        callback: function () {
-                            $.ajax({
-                                headers: {
-                                    'Authorization': "Basic " + btoa('' + ":" + '')
-                                }
-                            });
-
-                        }
-                    }
-                }
-            });
-        }
-    </script>
 </head>
 <body>
     <!-- Navbar -->

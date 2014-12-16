@@ -1,48 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <script type="text/javascript">
-        $(document).on("click", "#registerLink", function(e) {
-            $("#body").load("public/register.html");
-        });
-
-
-        function login(){
-            var password = $("#password").val();
-            var name = $("#name").val();
-            $.ajax({
-                headers: {
-                    'Authorization': "Basic " + btoa(name + ":" + password)
-                },
-                statusCode: {
-                    200: function() {
-                        $("#body").load("private/welcome.html");
-                        $.ajaxSetup({
-                            headers: {
-                                'Authorization': "Basic " + btoa(name + ":" + password)
-                            },
-                            cache: false
-                        })
-                    },
-                    401: function() {
-                        bootbox.dialog({
-                            title: "Fehler",
-                            message: "Der Login ist fehlgeschlagen!",
-                            buttons: {
-                                main: {
-                                    label: "Zur&uuml;ck",
-                                    className: "btn-primary",
-                                    callback: function () {
-                                    }
+    <script>
+        $.ajaxSetup({
+            statusCode: {
+                401: function() {
+                    bootbox.dialog({
+                        title: "Fehler",
+                        message: "Der Login ist fehlgeschlagen!",
+                        buttons: {
+                            main: {
+                                label: "Zur&uuml;ck",
+                                className: "btn-primary",
+                                callback: function () {
                                 }
                             }
-                        });
-                    }
-                }}
-            );
-         }
-
-
+                        }
+                    });
+                }
+            }
+        });
     </script>
 </head>
 <body>
@@ -56,7 +33,7 @@
                 <div class="col-md-12 control">
                     <div>
                         Noch kein Account?
-                        <a id="registerLink" href="#">Hier registrieren!</a>
+                        <a id="toRegistration" href="#">Hier registrieren!</a>
                     </div>
                 </div>
             </div>

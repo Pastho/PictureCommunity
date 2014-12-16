@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
     <script type="text/javascript" src="/faces/resources/js/bootstrap-filestyle.min.js"></script>
     <script type="text/javascript">
         $(":file").filestyle();
@@ -14,17 +13,16 @@
                     title: "Erfolg",
                     message: "Das Bild wurde erfolgreich hochgeladen und als "+type+" markiert.",
                     buttons: {
-                        main: {
-                            label: "Zur&uuml;ck",
-                            className: "btn-primary",
+                        success: {
+                            label: "Weiter",
+                            className: "btn-success",
                             callback: function () {
                             }
                         }
                     }
                 });
                 }
-            },
-            cache:false
+            }
         });
 
         $(function () {
@@ -66,7 +64,6 @@
     </script>
 </head>
 <body>
-
     <div class="container">
         <h2>Bilder hochladen</h2>
         <form role="form" id="uploadForm">
