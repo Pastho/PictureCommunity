@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+    <script>
+        function printUser(data) {
+            var name;
+            var mail;
+            $.each(data, function(key, val) {
+                if (key == "username"){
+                    name = val;
+                }
+                if (key == "email"){
+                    mail = val;
+                }
+            });
+            $("#result").append("Name: "+name + "\nMail: "+mail);
+        }
+
+        function findUser(){
+            var user;
+            var name = $("#inputName").val();
+            var mail = $("#inputEmail").val();
+
+            $("#result").empty();
+
+            if (name != ""){
+                findUserByName(name);
+            }
+            else if (mail != "" && name == ""){
+                findUserByMail(mail);
+            }
+            else{
+                $("#result").append("Ung&uuml;ltige Eingabe");
+            }
+        }
+
+        function findUserByName(name) {
+            $.getJSON('/REST/user/name/' + name, {}, function(data) {
+                $.each(data, function(key, val) {
+                    printUser(val);
+                });
+            });
+        }
+
+        function findUserByMail(mailAddress) {
+            $.getJSON('/REST/user/mailaddress/' + mailAddress, {}, function(data) {
+                printUser(data);
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -8,7 +55,7 @@
             <h2 class="form-signin-heading">Freunde hinzuf&uuml;gen</h2>
             <input type="text" id="inputName" class="form-control" placeholder="Name" autofocus>
             <input type="email" id="inputEmail" class="form-control" placeholder=".. oder Email-Addresse" autofocus>
-            <button id="searchButton" class="btn btn-lg btn-primary btn-block" type="submit">Suche</button>
+            <button id="searchButton" class="btn btn-lg btn-primary btn-block" type="submit" onclick="findUser()">Suche</button>
             <br />
             <label for="result">Ergebnis:</label>
             <textarea class="form-control" rows="3" id="result"></textarea>
