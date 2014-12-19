@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:include src="/pages/include/includes/head.xhtml"></ui:include>
+
+<h:body>
+
+    <ui:composition template="../include/templates/commonLayout.xhtml">
+
+        <ui:define name="content">
+            <div class="container">
+
+                <p:chart type="bar" model="#{adminController.barModel}" style="height:300px"/>
+
+                <hr/>
+
+                <h:form id="delete_user_form">
+                    <p:panel id="delete_user_panel"
+                             header="Benutzer löschen:"
+                             style="margin-bottom:10px;">
+
+                        <p:panelGrid columns="3">
+                            <p:inputText id="searchString" value="#{adminController.searchString}" required="true"
+                                         label="Benutzer:">
+                            </p:inputText>
+                            <p:message for="searchString"/>
+                            <h:outputText value="#{adminController.resultText}"/>
+                        </p:panelGrid>
+
+                        <p:commandButton process="@parent" update="delete_user_panel"
+                                         value="Benutzer inkl. Bilder löschen"/>
+
+                    </p:panel>
+                </h:form>
+
+            </div>
+            <!-- /.container -->
+        </ui:define>
+
+    </ui:composition>
+
+</h:body>
+</html>

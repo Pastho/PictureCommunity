@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:include src="/pages/include/includes/head.xhtml"></ui:include>
+
+<h:body>
+
+    <ui:composition template="../include/templates/commonLayout.xhtml">
+
+        <ui:define name="content">
+            <div class="container">
+
+                <h:form id="value_form_friends" prependId="true">
+
+                    <p:panel id="panel_friends"
+                             header="Bilder von Freunden"
+                             style="margin-bottom:10px;">
+
+                        <h:panelGrid columns="1" style="width: 100%">
+                            <p:galleria id="gallery_friends" value="#{pictureController.friendsImages}" var="img"
+                                        panelWidth="250" panelHeight="200" frameWidth="48" frameHeight="65"
+                                        effect="clip">
+
+                                <p:graphicImage id="galleryimage_friends"
+                                                value="#{pictureController.friendsImages}" title="#{img.name}"
+                                                alt="#{img.name}">
+                                    <f:param name="id" value="#{img.id}"/>
+                                </p:graphicImage>
+                            </p:galleria>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+
+                <hr/>
+
+                <p:panel id="search_friends"
+                         header="Freunde suchen"
+                         style="margin-bottom:10px;">
+
+                </p:panel>
+
+                <hr/>
+
+                <p:panel id="online_friends"
+                         header="Anmeldestatus der Freunde"
+                         style="margin-bottom:10px;">
+
+                </p:panel>
+
+            </div>
+            <!-- /.container -->
+        </ui:define>
+
+    </ui:composition>
+
+</h:body>
+</html>

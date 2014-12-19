@@ -19,23 +19,31 @@
 
                 <!-- Form -->
                 <h:form>
-                    <p:panel id="panel" header="Login" resizable="false">
+                    <p:panel id="panel" header="Anmelden" resizable="false">
+                        <p:focus context="panel"/>
                         <p:messages id="messages"/>
-                        <h:panelGrid columns="3" cellpadding="5">
+                        <h:panelGrid columns="3">
 
-                            <h:outputLabel for="inputUsername" value="Benutzername:"/>
-                            <p:inputText id="inputUsername" value="#{loginController.inputUsername}" required="true"
+                            <h:outputLabel for="inputUsername"
+                                           value="Benutzername:"/>
+                            <p:inputText id="inputUsername"
+                                         value="#{loginController.inputUsername}"
+                                         required="true"
                                          label="Benutzername"
                                          validatorMessage="Eingegebener Benutzername ist nicht korrekt"/>
                             <p:message for="inputUsername"/>
 
-                            <h:outputLabel for="inputPassword" value="Passwort:"/>
-                            <p:password id="inputPassword" value="#{loginController.inputPassword}" required="true"
+                            <h:outputLabel for="inputPassword"
+                                           value="Passwort:"/>
+                            <p:password id="inputPassword"
+                                        value="#{loginController.inputPassword}"
+                                        required="true"
                                         label="Passwort"
                                         validatorMessage="Eingegebenes Passwort ist nicht korrekt"/>
                             <p:message for="inputPassword"/>
+
                             <f:facet name="footer">
-                                <p:commandButton value="Login" update="panel"
+                                <p:commandButton value="Anmelden" update="panel"
                                                  actionListener="#{loginController.login}"/>
 
                             </f:facet>

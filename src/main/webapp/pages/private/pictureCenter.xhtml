@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
@@ -14,13 +15,45 @@
 
         <ui:define name="content">
             <div class="container">
-                <h:form id="value_form">
-                    <p:panel id="panel" header="Private Primefaces-Demo" style="margin-bottom:10px;">
-                        <h:panelGrid columns="1" style="width: 100%">
-                            <h:outputLabel id="output" value="Welcome to the private zone"/>
+
+                <h:form id="value_form" prependId="true">
+
+                    <p:panel id="panel"
+                             header="Sammlung eigener Bilder"
+                             style="margin-bottom:10px;">
+
+                        <h:panelGrid columns="1" style="width: 100% height: 800px">
+                            <p:galleria id="gallery" value="#{pictureController.images}" var="img"
+                                        panelWidth="250" panelHeight="200" frameWidth="48" frameHeight="65"
+                                        effect="clip">
+
+                                <p:graphicImage id="galleryimage"
+                                                value="#{pictureController.image}" title="#{img.name}"
+                                                alt="#{img.name}">
+                                    <f:param name="id" value="#{img.id}"/>
+                                </p:graphicImage>
+                            </p:galleria>
                         </h:panelGrid>
                     </p:panel>
                 </h:form>
+
+                <h:form>
+                    <h:outputText value="Öffentlich: "/>
+                    <p:selectBooleanCheckbox value="#{pictureController.publicPicture}">
+                        <p:ajax partialSubmit="#{pictureController.publicPicture}"/>
+                    </p:selectBooleanCheckbox>
+
+                    <p:fileUpload fileUploadListener="#{pictureController.handleFileUpload}"
+                                  mode="advanced" update="messages :value_form:panel" sizeLimit="100000000"
+                                  label="Auswählen"
+                                  uploadLabel="Hochladen"
+                                  cancelLabel="Abbrechen"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|GIF|JPE?G|PNG)$/"
+                            />
+
+                    <p:growl id="messages" showDetail="true"/>
+                </h:form>
+
             </div>
             <!-- /.container -->
         </ui:define>

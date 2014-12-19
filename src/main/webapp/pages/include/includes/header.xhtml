@@ -7,44 +7,57 @@
 
 <body>
 <ui:composition>
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
 
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <h:outputLink value="start.xhtml" class="navbar-brand">Picture Community</h:outputLink>
+    <security:authorize access="isAnonymous()">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <h:outputLink value="../public/start.xhtml" class="navbar-brand">Picture Community</h:outputLink>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><h:outputLink value="../public/login.xhtml">Anmelden</h:outputLink></li>
+                        <li><h:outputLink value="../public/register.xhtml">Registrieren</h:outputLink></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
             </div>
+            <!-- /.container -->
+        </nav>
+    </security:authorize>
 
-            <security:authorize access="isAnonymous()">
-                <ul class="nav navbar-right">
-                    <li><h:outputLink value="login.xhtml">Anmelden</h:outputLink></li>
-                    <li><h:outputLink value="register.xhtml">Registrieren</h:outputLink></li>
-                </ul>
-            </security:authorize>
+    <security:authorize access="isAuthenticated()">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
 
-            <security:authorize access="isAuthenticated()">
-                <ul class="nav navbar-right">
-                    <li><h:outputLink value="../private/pictureCenter.xhtml">Picture Center</h:outputLink></li>
-                    <li><h:outputLink value="/j_spring_security_logout">Abmelden</h:outputLink></li>
-                </ul>
-            </security:authorize>
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <h:outputLink value="../public/start.xhtml" class="navbar-brand">Picture Community</h:outputLink>
+                </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                    <ul class="nav navbar-nav">
+                        <li><h:outputLink value="../private/pictureCenter.xhtml">Picture Center</h:outputLink></li>
+                        <li><h:outputLink value="../private/friendCenter.xhtml">Friend Center</h:outputLink></li>
+                        <li><h:outputLink value="../admin/adminCenter.xhtml">Admin Center</h:outputLink></li>
+                    </ul>
 
-                <form class="navbar-form navbar-right" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search"/>
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><h:outputLink value="/j_spring_security_logout">Abmelden</h:outputLink></li>
+                    </ul>
+
+                </div>
+                <!-- /.navbar-collapse -->
             </div>
-            -->
-            <!-- /.navbar-collapse -->
+            <!-- /.container -->
+        </nav>
+    </security:authorize>
 
-        </div>
-        <!-- /.container -->
-    </nav>
 </ui:composition>
 </body>
 

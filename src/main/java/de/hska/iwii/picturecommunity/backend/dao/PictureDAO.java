@@ -74,7 +74,7 @@ public class PictureDAO extends AbstractDAO {
 	 * 			Ist er <code>false</code>, dann werden alle Bilder zurueckgegeben. 
 	 * @return Alle Bilder eines Anwenders.
 	 */
-	public List<Picture> getPictures(User user, int firstResult, int maxResults, boolean onlyPublicVisible) {
+public List<Picture> getPictures(User user, int firstResult, int maxResults, boolean onlyPublicVisible) {
 
 		MapSqlParameterSource params = new MapSqlParameterSource();
 

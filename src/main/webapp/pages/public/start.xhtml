@@ -19,18 +19,23 @@
 
                 <h2>Willkommen bei der Picture Community!</h2>
 
-                <p>Dies ist eine Sammlung der neuesten öffentlichen Bilder</p>
+                <p:panel id="panel"
+                         header="Sammlung öffentlicher Bilder"
+                         style="margin-bottom:10px;">
 
-                <p:galleria id="gallery" value="#{pictureCommunityController.images}" var="img"
-                            panelWidth="800" panelHeight="600" frameWidth="48" frameHeight="65"
-                            effect="clip">
+                    <h:panelGrid columns="1" style="width: 100% height: 800px">
+                        <p:galleria id="gallery" value="#{pictureController.publicImages}" var="img"
+                                    panelWidth="250" panelHeight="200" frameWidth="48" frameHeight="65"
+                                    effect="clip">
 
-                    <p:graphicImage id="galleryimage"
-                                    value="#{pictureCommunityController.image}" title="#{img.name}"
-                                    alt="#{img.name}">
-                        <f:param name="id" value="#{img.id}"/>
-                    </p:graphicImage>
-                </p:galleria>
+                            <p:graphicImage id="galleryimage"
+                                            value="#{pictureController.image}" title="#{img.name}"
+                                            alt="#{img.name}">
+                                <f:param name="id" value="#{img.id}"/>
+                            </p:graphicImage>
+                        </p:galleria>
+                    </h:panelGrid>
+                </p:panel>
 
             </div>
             <!-- /.container -->
