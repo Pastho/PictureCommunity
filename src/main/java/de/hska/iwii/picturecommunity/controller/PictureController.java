@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Author: Thomas Pasberg
@@ -127,13 +128,15 @@ public class PictureController {
         List<User> friends = null;
         List<Picture> picturesOfFriends = null;
 
-        // Get potential friends of current user
-        friends = userDAO.findFriendsOfUser(getCurrentUser());
-
-        if (!friends.isEmpty()) {
-            // Get all pictures of related friends
-            for (User friend : friends) {
-                picturesOfFriends.addAll(pictureDAO.getPictures(friend, 0, Integer.MAX_VALUE, false));
+        User user = getCurrentUser();
+        Set<User> friendsOfUser = user.getFriendsOf();
+        if (friendsOfUser != null) {
+            for (User friend : friendsOfUser) {
+                if (picturesOfFriends == null) {
+                    picturesOfFriends = pictureDAO.getPictures(friend, 0, Integer.MAX_VALUE, false);
+                } else {
+                    picturesOfFriends.addAll(pictureDAO.getPictures(friend, 0, Integer.MAX_VALUE, false));
+                }
             }
         }
 

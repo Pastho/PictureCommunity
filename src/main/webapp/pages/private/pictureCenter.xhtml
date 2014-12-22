@@ -24,12 +24,12 @@
 
                         <h:panelGrid columns="1" style="width: 100% height: 800px">
                             <p:galleria id="gallery" value="#{pictureController.images}" var="img"
-                                        panelWidth="250" panelHeight="200" frameWidth="48" frameHeight="65"
+                                        panelWidth="533" panelHeight="400" frameWidth="60" frameHeight="100"
                                         effect="clip">
 
                                 <p:graphicImage id="galleryimage"
                                                 value="#{pictureController.image}" title="#{img.name}"
-                                                alt="#{img.name}">
+                                                alt="Beschreibugn für #{img.name}">
                                     <f:param name="id" value="#{img.id}"/>
                                 </p:graphicImage>
                             </p:galleria>
@@ -52,6 +52,29 @@
                             />
 
                     <p:growl id="messages" showDetail="true"/>
+                </h:form>
+
+                <hr/>
+
+                <h:form id="friends_form" prependId="true">
+
+                    <p:panel id="friends_panel"
+                             header="Sammlung der Bilder von Freunden"
+                             style="margin-bottom:10px;">
+
+                        <h:panelGrid columns="1" style="width: 100% height: 800px">
+                            <p:galleria id="friends_gallery" value="#{pictureController.friendsImages}" var="img"
+                                        panelWidth="533" panelHeight="400" frameWidth="60" frameHeight="60"
+                                        effect="clip">
+
+                                <p:graphicImage id="friends_galleryimage"
+                                                value="#{pictureController.image}" title="#{img.name}"
+                                                alt=" Beschreibung für #{img.name}">
+                                    <f:param name="id" value="#{img.id}"/>
+                                </p:graphicImage>
+                            </p:galleria>
+                        </h:panelGrid>
+                    </p:panel>
                 </h:form>
 
             </div>

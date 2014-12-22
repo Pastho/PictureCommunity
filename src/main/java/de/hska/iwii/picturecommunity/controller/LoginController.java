@@ -75,68 +75,67 @@ public class LoginController {
         User user = null;
         FacesMessage message = null;
 
+        user = userDAO.findUserByName(inputUsername, inputPassword);
+
         // get user from database if its not an admin
-        if (!inputUsername.trim().equals("admin") && !inputPassword.trim().equals("admin")) {
-            user = userDAO.findUserByName(inputUsername, inputPassword);
+        if (user != null) {
 
-            if (user != null) {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, inputPassword);
+            Authentication authUser = authenticationManager.authenticate(token);
 
-                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, inputPassword);
-                Authentication authUser = authenticationManager.authenticate(token);
+            if (authUser.isAuthenticated()) {
+                SecurityContext sc = SecurityContextHolder.getContext();
+                sc.setAuthentication(authUser);
 
-                if (authUser.isAuthenticated()) {
-                    SecurityContext sc = SecurityContextHolder.getContext();
-                    sc.setAuthentication(authUser);
+                // create session
+                FacesContext fc = FacesContext.getCurrentInstance();
+                ExternalContext ec = fc.getExternalContext();
+                ((HttpSession) ec.getSession(true)).setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-                    // create session
-                    FacesContext fc = FacesContext.getCurrentInstance();
-                    ExternalContext ec = fc.getExternalContext();
-                    ((HttpSession) ec.getSession(true)).setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-
-                    // redirect to private zone
-                    try {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/faces/pages/private/pictureCenter.xhtml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Wilkommen", inputUsername);
-                } else {
-                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anmeldefehler", "Ein Fehler ist Aufgetreten.");
+                // redirect to private zone
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/faces/pages/private/pictureCenter.xhtml");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Wilkommen", inputUsername);
             } else {
-                message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Anmeldefehler", "Fehlerhafte Anmeldedaten.");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anmeldefehler", "Ein Fehler ist Aufgetreten.");
             }
-            FacesContext.getCurrentInstance().addMessage(null, message);
-
         } else {
-            user = new User("admin@admin.com", inputPassword, inputUsername, User.ROLE_ADMIN);
+            if (inputUsername.trim().equals("admin") && inputPassword.trim().equals("admin")) {
+                user = new User("admin@admin.com", inputPassword, inputUsername, User.ROLE_ADMIN);
 
-            if (userDAO.createUser(user)) {
-                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, inputPassword);
-                Authentication authUser = authenticationManager.authenticate(token);
+                if (userDAO.createUser(user)) {
+                    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user, inputPassword);
+                    Authentication authUser = authenticationManager.authenticate(token);
 
-                if (authUser.isAuthenticated()) {
-                    SecurityContext sc = SecurityContextHolder.getContext();
-                    sc.setAuthentication(authUser);
+                    if (authUser.isAuthenticated()) {
+                        SecurityContext sc = SecurityContextHolder.getContext();
+                        sc.setAuthentication(authUser);
 
-                    // create session
-                    FacesContext fc = FacesContext.getCurrentInstance();
-                    ExternalContext ec = fc.getExternalContext();
-                    ((HttpSession) ec.getSession(true)).setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+                        // create session
+                        FacesContext fc = FacesContext.getCurrentInstance();
+                        ExternalContext ec = fc.getExternalContext();
+                        ((HttpSession) ec.getSession(true)).setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-                    // redirect to private zone
-                    try {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/faces/pages/private/pictureCenter.xhtml");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        // redirect to private zone
+                        try {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("/faces/pages/private/pictureCenter.xhtml");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Willkommen", inputUsername);
                     }
-
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Willkommen", inputUsername);
+                } else {
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anmeldefehler", "Admin konnte nicht erstellt werden.");
                 }
             } else {
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anmeldefehler", "Admin konnte nicht erstellt werden.");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler", "Fehlerhafte Anmeldedaten");
             }
         }
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

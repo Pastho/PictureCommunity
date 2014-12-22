@@ -28,8 +28,8 @@ import java.util.Map;
 public class AdminController {
 
     private BarChartModel barModel;
-    private String searchString;
-    private String resultText;
+    private String searchString = "";
+    private String resultString = "";
 
     @Autowired
     private UserDAO userDAO;
@@ -45,35 +45,33 @@ public class AdminController {
     // Begin of setter and getter methods
     // ====================================================
 
+    public String getResultString() {
+        return resultString;
+    }
+
+    public void setResultString(String resultString) {
+        this.resultString = resultString;
+    }
+
     public String getSearchString() {
-        return searchString;
-    }
-
-    public void setSearchString(String searchString) {
-        this.searchString = searchString;
-    }
-
-    public String getResult() {
         if (!searchString.isEmpty()) {
             User user = userDAO.findUserByName(searchString);
 
             if (user != null) {
                 userDAO.deleteUser(user);
-                return "Der Benutzer " + searchString + " wurde inkl. seiner Bilder gelöscht";
+                resultString = "Der Benutzer " + searchString + " wurde inkl. seiner Bilder gelöscht";
+
             } else {
-                return "Der Benutzer konnte nicht gefunden werden";
-            }
-        } else {
-            return "Die Suche konnten nicht ausgeführt werden.";
+                resultString = "Der Benutzer konnte nicht gefunden werden";
+         }
+} else {
+        resultString = "";
         }
-    }
+        return "";
+        }
 
-    public void setResult(String result) {
-        this.resultText = result;
-    }
-
-    public String getResultText() {
-        return this.resultText;
+    public void setSearchString(String searchString) {
+        this.searchString = searchString;
     }
 
     public BarChartModel getBarModel() {
