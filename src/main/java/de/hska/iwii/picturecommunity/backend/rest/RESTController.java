@@ -157,7 +157,80 @@ public class RESTController {
 		}
 		Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
 		return user != null ? new ResponseEntity<>(new User(user), HttpStatus.OK)  : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}	
+	}
+
+    /**
+     * Fügt dem Aufrufer den übergebenen Anwender anhand Mailaddresse als Freund hinzu.
+     * @param mailaddress Mail des Anwenders, der dem Aufrufer als Freund hinzugefügt wird.
+     */
+    @RequestMapping(value="/user/addFriendByMail/{mailaddress:.+}", method=RequestMethod.GET)
+    public ResponseEntity<User> addFriendByMail(@PathVariable String mailaddress, Principal principal){
+        boolean newFriend = false;
+        StringBuilder logMessage = new StringBuilder();
+        logMessage.append("REST: /user/addFriend/" + mailaddress + "\n");
+
+        de.hska.iwii.picturecommunity.backend.entities.User caller = getUser(principal);
+        de.hska.iwii.picturecommunity.backend.entities.User user = memberDAO.findUserByMailaddress(mailaddress);
+
+        if(user == caller){
+            logMessage.append("User befreundet sich selbst.");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+
+        if(user != null){
+            if(caller.getFriendsOf().contains(user)){
+                logMessage.append("Die User sind bereits befreundet.");
+            }
+            else{
+                caller.getFriendsOf().add(user);
+                memberDAO.updateUser(user);
+                logMessage.append(caller.getUsername() + " ist nun mit " + user.getUsername() + " befreundet.");
+                newFriend = true;
+            }
+        }
+
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
+        return newFriend ? new ResponseEntity<>(new User(user), HttpStatus.OK)  : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Fügt dem Aufrufer den übergebenen Anwender anhand Username als Freund hinzu.
+	 * @param userName Name des Anwenders, der dem Aufrufer als Freund hinzugefügt wird.
+     */
+    @RequestMapping(value="/user/addFriendByName/{userName}", method=RequestMethod.GET)
+    public ResponseEntity<User> addFriendByName(@PathVariable String userName, Principal principal){
+        boolean newFriend = false;
+        StringBuilder logMessage = new StringBuilder();
+        logMessage.append("REST: /user/addFriend/" + userName + "\n");
+
+        de.hska.iwii.picturecommunity.backend.entities.User caller = getUser(principal);
+        de.hska.iwii.picturecommunity.backend.entities.User user = memberDAO.findUserByName(userName);
+
+        if(user == caller){
+            logMessage.append("User befreundet sich selbst.");
+            Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+
+        if(user != null){
+            if(caller.getFriendsOf().contains(user)){
+                logMessage.append("Die User sind bereits befreundet.");
+            }
+            else{
+                caller.getFriendsOf().add(user);
+                logMessage.append(caller.getUsername() + " ist nun mit " + userName + " befreundet.");
+                newFriend = true;
+            }
+        }
+
+        Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
+        return newFriend ? new ResponseEntity<>(new User(user), HttpStatus.OK)  : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
 
 	/**
 	 * Ermittelt alle Anwender, denen der uebergebene Anwender folgt.
@@ -236,7 +309,6 @@ public class RESTController {
 		else {
 			logMessage.append("    Invalid user, no pictures selected");
 		}
-		
 		Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
 		return restPictures != null ? new ResponseEntity<>(restPictures, HttpStatus.OK) : new ResponseEntity<List<Picture>>(HttpStatus.NOT_FOUND);
 	}
@@ -254,13 +326,12 @@ public class RESTController {
 	 * 		nur dann zurueckgegeben, wenn es ein oeffentliches ist.
 	 * @param resp Servlet-Response-Objekt.
 	 */
-	@RequestMapping("/picture/{id}") 
+	@RequestMapping(value = "/picture/{id}",  method=RequestMethod.GET)
 	public ResponseEntity<byte[]> getPicture(@PathVariable int id, @RequestParam(required=false) Integer width,
-							@RequestParam(required=false) Integer height, Principal principal,
-							HttpServletResponse resp, HttpServletRequest req) {
+							@RequestParam(required=false) Integer height, @RequestParam(required=false) String name,
+                            Principal principal,HttpServletResponse resp, HttpServletRequest req) {
 
 		StringBuilder logMessage = new StringBuilder();
-		
 		// Log-meldung bauen
 		String scaleMessage = "";
 				
@@ -277,7 +348,7 @@ public class RESTController {
 		logMessage.append("REST: /picture/" + id + scaleMessage + "\n");
 
 		// Aufrufer der Methode
-		de.hska.iwii.picturecommunity.backend.entities.User caller = getUser(principal);
+		de.hska.iwii.picturecommunity.backend.entities.User caller = memberDAO.findUserByName(name);
 
 		de.hska.iwii.picturecommunity.backend.entities.Picture dbPicture = pictureDAO.getPicture(id);
 
@@ -292,12 +363,13 @@ public class RESTController {
 				if (!onlyPublic || dbPicture.isPublicVisible()) {  
 					// Nur fuer Download
 			        //resp.setHeader("Content-Disposition", "attachment; filename=\"" + dbPicture.getName() + "\"");
+
 					logMessage.append("    Picture " + dbPicture.getName() + " found");
 					Logger.getLogger(this.getClass().getName()).log(Level.INFO, logMessage.toString());
 					
 			        resp.setContentType(dbPicture.getMimeType());
 				    resp.setContentLength(dbPicture.getData().length);
-	
+
 					return new ResponseEntity<>(ImageUtils.scale(dbPicture.getData(), width, height), HttpStatus.OK);
 				}
 				else {

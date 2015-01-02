@@ -71,9 +71,26 @@
             var password = $("#password").val();
             var name = $("#name").val();
             var email = $("#email").val();
-            var senddata={ username : name, password : password, mailaddress: email };
-            $.post('/REST/register', senddata, function(data) {
-            });
+            if (password == "" || name == "" || email == ""){
+                bootbox.dialog({
+                    title: "Fehler",
+                    message: "Unvollst&auml;ndige Eingabe",
+                    buttons: {
+                        main: {
+                            label: "Zur&uuml;ck",
+                            className: "btn-primary",
+                            callback: function () {
+                                $("#body").load("public/register.html");
+                            }
+                        }
+                    }
+                });
+            }
+            else {
+                var senddata = { username: name, password: password, mailaddress: email };
+                $.post('/REST/register', senddata, function (data) {
+                });
+            }
         }
         function loadPrivateImages(){
             $.getJSON("/REST/pictures/"+currentName, {})
@@ -82,6 +99,25 @@
                             showPicture(val);
                         });
                     });
+        }
+
+        function loadFriendsImages(){
+            $.getJSON('/REST/user/friends/' + currentName, {}, function(data) {
+                $.each(data, function(key, val) {
+                    var name;
+                    $.each(val, function(key, val) {
+                        if (key == "username"){
+                            name = val;
+                        }
+                    });
+                    $.getJSON("/REST/pictures/"+name, {})
+                            .done(function(data) {
+                                $.each(data, function(key, val) {
+                                    showPicture(val);
+                                });
+                            });
+                });
+            });
         }
 
         function loadPublicImages(){
@@ -104,10 +140,10 @@
                     descr = val;
                 }
             });
-            loadPicture(id, descr, 200);
+            loadPicture(id, descr);
         }
 
-        function loadPicture(id, descr, width) {
+        function loadPicture(id, descr) {
             var description = document.createElement("div");
             var caption = document.createElement("h4");
             var text = document.createTextNode(descr);
@@ -123,12 +159,8 @@
                 div.appendChild(description);
                 $("#images").append(div);
             };
-            if (width >= 1 && width < 10000) {
-                img.src = '/REST/picture/' + id + '?width=' + width;
-            }
-            else {
-                img.src = '/REST/picture/' + id;
-            }
+
+            img.src = "/REST/picture/" + id + "?name="+currentName+"&width=200";
         }
 
         $(function(){

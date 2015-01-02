@@ -1,11 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+    <script type="text/javascript">
+        $(function(){
+            showFriends();
+        });
+
+        function showFriends() {
+            $.getJSON('/REST/user/friends/' + currentName, {}, function(data) {
+                $.each(data, function(key, val) {
+                    printUser(val);
+                });
+            });
+        }
+
+        function printUser(data) {
+            var name;
+            var mail;
+            $.each(data, function(key, val) {
+                if (key == "username"){
+                    name = val;
+                }
+                if (key == "email"){
+                    mail = val;
+                }
+            });
+
+            $("#result").append(name + " mit der Mailaddresse "+mail +"\n");
+        }
+
+    </script>
 </head>
 <body>
     <div class="container">
         <div class="starter-template">
-            <h2>Verwalte deine Freunde und sehe wer gerade online ist!</h2>
+            <h2>Betrachte deine Freunde</h2>
+            <textarea class="form-control" rows="3" id="result"></textarea>
         </div>
     </div>
 </body>

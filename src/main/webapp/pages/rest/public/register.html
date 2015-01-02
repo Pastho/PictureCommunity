@@ -6,25 +6,34 @@
             statusCode: {
                 201: function () {
                     bootbox.dialog({
-                        title: "Willkommen " + $("#name").val() + "!",
-                        message: "Die Registrierung war erfolgreich.",
-                        buttons: {
-                            success: {
-                                label: "Weiter",
-                                className: "btn-success",
-                                callback: function () {
-                                    $("#body").load("public/login.html");
-                                }
+                    title: "Willkommen " + $("#name").val() + "!",
+                    message: "Die Registrierung war erfolgreich.",
+                    buttons: {
+                        success: {
+                            label: "Weiter",
+                            className: "btn-success",
+                            callback: function () {
+                                $("#body").load("public/login.html");
                             }
                         }
+                    }
                     });
+                    }
                 },
                 409: function () {
                     bootbox.dialog({
                         title: "Fehler",
-                        message: "Ein Benutzer mit diesem Namen ist bereits registriert!"
+                        message: "Der Benutzer ist bereits registriert!",
+                        buttons: {
+                            main: {
+                                label: "Zur&uuml;ck",
+                                className: "btn-primary",
+                                callback: function () {
+                                }
+                            }
+                        }
                     });
-                }}
+                }
         });
     </script>
 </head>

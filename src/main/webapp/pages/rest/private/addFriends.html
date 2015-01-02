@@ -2,7 +2,19 @@
 <html>
 <head lang="en">
     <script>
-        function printUser(data) {
+        $.ajaxSetup({
+            statusCode: {
+                404: function() {
+                    $("#result").append("Sie sind bereits befreundet.");
+                },
+                409: function(){
+                    $("#result").append("Sie k&ouml;nnen sich nicht mit sich selbst befreunden.");
+                }
+            }
+        });
+
+
+        function printUser(data, search) {
             var name;
             var mail;
             $.each(data, function(key, val) {
@@ -13,7 +25,13 @@
                     mail = val;
                 }
             });
-            $("#result").append("Name: "+name + "\nMail: "+mail);
+
+            if (search){
+                $("#result").append("Name: "+name + "\nMail: "+mail);
+            }
+            else{
+                $("#result").append(name + " wurde als Freund hinzugef&uuml;gt.");
+            }
         }
 
         function findUser(){
@@ -37,15 +55,35 @@
         function findUserByName(name) {
             $.getJSON('/REST/user/name/' + name, {}, function(data) {
                 $.each(data, function(key, val) {
-                    printUser(val);
+                    printUser(val, true);
                 });
             });
         }
 
         function findUserByMail(mailAddress) {
             $.getJSON('/REST/user/mailaddress/' + mailAddress, {}, function(data) {
-                printUser(data);
+                printUser(data, true);
             });
+        }
+
+        function addFriend() {
+            $("#result").empty();
+            var username = $("#inputName").val();
+            var mail = $("#inputEmail").val();
+            if (username != ""){
+                $.getJSON('/REST/user/addFriendByName/' + username, {}, function (data) {
+                    printUser(data, false);
+                });
+            }
+            else if (mail != ""){
+                $.getJSON('/REST/user/addFriendByMail/' + mail, {}, function (data) {
+                    printUser(data, false);
+                });
+            }
+            else{
+                $("#result").append("Zuerst nach einem g&uuml;ltigen Anwender suchen.");
+            }
+
         }
     </script>
 </head>
@@ -59,7 +97,7 @@
             <br />
             <label for="result">Ergebnis:</label>
             <textarea class="form-control" rows="3" id="result"></textarea>
-            <button id="addButton" class="btn btn-lg btn-primary btn-block" type="submit">Hinzuf&uuml;gen</button>
+            <button id="addButton" class="btn btn-lg btn-primary btn-block" type="submit" onclick="addFriend()">Hinzuf&uuml;gen</button>
         </form>
     </div>
 </body>
