@@ -3,62 +3,39 @@
 
 <html xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:security="http://www.springframework.org/security/tags">
+        >
 
 <body>
 <ui:composition>
 
-    <security:authorize access="isAnonymous()">
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
 
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <h:outputLink value="../public/start.xhtml" class="navbar-brand">Picture Community</h:outputLink>
-                </div>
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><h:outputLink value="../public/login.xhtml">Anmelden</h:outputLink></li>
-                        <li><h:outputLink value="../public/register.xhtml">Registrieren</h:outputLink></li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <h:outputLink value="../public/start.xhtml" class="navbar-brand">Picture Community</h:outputLink>
             </div>
-            <!-- /.container -->
-        </nav>
-    </security:authorize>
 
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                <ul class="nav navbar-nav">
+                    <li><h:outputLink value="../private/pictureCenter.xhtml">Picture Center</h:outputLink></li>
+                    <li><h:outputLink value="../private/friendCenter.xhtml">Friend Center</h:outputLink></li>
+                    <li><h:outputLink value="../admin/adminCenter.xhtml">Admin Center</h:outputLink></li>
+                </ul>
 
-    <security:authorize access="hasRole('user') or hasRole('admin')">
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><h:outputLink value="../public/login.xhtml">Anmelden</h:outputLink></li>
+                    <li><h:outputLink value="/j_spring_security_logout">Abmelden</h:outputLink></li>
+                    <li><h:outputLink value="../public/register.xhtml">Registrieren</h:outputLink></li>
+                </ul>
 
-
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <h:outputLink value="../public/start.xhtml" class="navbar-brand">Picture Community</h:outputLink>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                    <ul class="nav navbar-nav">
-                        <li><h:outputLink value="../private/pictureCenter.xhtml">Picture Center</h:outputLink></li>
-                        <li><h:outputLink value="../private/friendCenter.xhtml">Friend Center</h:outputLink></li>
-                        <li><h:outputLink value="../admin/adminCenter.xhtml">Admin Center</h:outputLink></li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><h:outputLink value="/j_spring_security_logout">Abmelden</h:outputLink></li>
-                    </ul>
-
-                </div>
-                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.container -->
-        </nav>
-    </security:authorize>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
 
 </ui:composition>
 </body>

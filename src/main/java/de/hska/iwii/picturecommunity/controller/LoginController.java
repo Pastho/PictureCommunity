@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,9 @@ import java.io.IOException;
 @Scope("session")
 @Qualifier("registerController")
 public class LoginController {
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     private UserDAO userDAO;
@@ -100,6 +104,7 @@ public class LoginController {
                 }
 
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Wilkommen", inputUsername);
+                sessionRegistry.registerNewSession(user.getName(), user);
             } else {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anmeldefehler", "Ein Fehler ist Aufgetreten.");
             }
@@ -114,7 +119,6 @@ public class LoginController {
                     if (authUser.isAuthenticated()) {
                         SecurityContext sc = SecurityContextHolder.getContext();
                         sc.setAuthentication(authUser);
-
                         // create session
                         FacesContext fc = FacesContext.getCurrentInstance();
                         ExternalContext ec = fc.getExternalContext();
@@ -128,6 +132,7 @@ public class LoginController {
                         }
 
                         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Willkommen", inputUsername);
+                        sessionRegistry.registerNewSession(user.getName(), user);
                     }
                 } else {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Anmeldefehler", "Admin konnte nicht erstellt werden.");
@@ -136,6 +141,7 @@ public class LoginController {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fehler", "Fehlerhafte Anmeldedaten");
             }
         }
+
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }

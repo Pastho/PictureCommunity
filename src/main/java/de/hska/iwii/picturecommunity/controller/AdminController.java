@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -55,20 +56,30 @@ public class AdminController {
 
     public String getSearchString() {
         if (!searchString.isEmpty()) {
-            User user = userDAO.findUserByName(searchString);
+            User userToDelete = userDAO.findUserByName(searchString);
 
-            if (user != null) {
-                userDAO.deleteUser(user);
+            if (userToDelete != null) {
+
+                // check if user is friend of current admin user
+                User currentUser = getCurrentUser();
+                if (currentUser.getFriendsOf().contains(userToDelete)) {
+                    currentUser.getFriendsOf().remove(userToDelete);
+                    userToDelete.getFriendsOf().clear();
+                    userDAO.updateUser(userToDelete);
+                    userDAO.updateUser(currentUser);
+                }
+
+                userDAO.deleteUser(userToDelete);
                 resultString = "Der Benutzer " + searchString + " wurde inkl. seiner Bilder gelöscht";
 
             } else {
                 resultString = "Der Benutzer konnte nicht gefunden werden";
-         }
-} else {
-        resultString = "";
+            }
+        } else {
+            resultString = "";
         }
         return "";
-        }
+    }
 
     public void setSearchString(String searchString) {
         this.searchString = searchString;
@@ -127,5 +138,24 @@ public class AdminController {
         yAxis.setLabel("Bilder");
         yAxis.setMin(0);
         yAxis.setMax(20);
+    }
+
+    /**
+     * Returns the user object of the current user
+     *
+     * @return The user object of the current user
+     */
+    private User getCurrentUser() {
+        User user = null;
+
+        // read user from context
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof User) {
+            // create user object
+            user = userDAO.findUserByMailaddress(((User) principal).getEmail());
+        }
+
+        return user;
     }
 }

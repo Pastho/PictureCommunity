@@ -105,8 +105,6 @@ public class PictureController {
 
         User user = getCurrentUser();
 
-        System.out.println("User: " + user.getName());
-
         FacesMessage msg = new FacesMessage("Erfolgreich", event.getFile().getFileName() + " wurde hochgeladen.");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 

@@ -18,19 +18,19 @@
 
                 <hr/>
 
-                <h:form id="form_add_friend">
+                <h:form id="form_add_friend" style="border: none">
                     <p:panel id="add_friend_panel"
                              header="Freund hinzufügen:"
-                             style="margin-bottom:10px;">
+                             style="margin-bottom:10px; border: none">
 
-                        <p:panelGrid columns="2">
+                        <p:panelGrid columns="2" style="border: none">
                             <p:inputText id="searchString" value="#{friendController.searchString}" required="true"
                                          label="Benutzer:">
                             </p:inputText>
-                            <h:outputText value="#{friendController.resultString}"/>
+                            <h:outputText id="output" value="#{friendController.resultString}"/>
                         </p:panelGrid>
 
-                        <p:commandButton process="@parent:@parent" update="form_add_friend"
+                        <p:commandButton process="@parent:@parent" update="output searchString"
                                          value="Freund hinzufügen"/>
 
                     </p:panel>
@@ -38,11 +38,12 @@
 
                 <hr/>
 
-                <p:dataList value="#{friendController.friends}" var="friend" type="unordered">
+                <p:dataList value="#{friendController.friends}" var="friend" type="unordered"
+                            emptyMessage="Keine Freunde vorhanden">
                     <f:facet name="header">
                         Status der Freunde:
                     </f:facet>
-                    #{friend.name}, #{friend.enabled}
+                    #{friend}
                 </p:dataList>
 
             </div>

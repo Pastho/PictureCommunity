@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -27,7 +28,10 @@ public class FriendController {
     private String searchString = "";
     private String resultString = "";
 
-    private List<User> friends;
+    private List<String> friends;
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     private UserDAO userDAO;
@@ -44,6 +48,28 @@ public class FriendController {
     // ====================================================
 
     public String getResultString() {
+        if (!searchString.isEmpty()) {
+
+            User friendToAdd = userDAO.findUserByName(searchString);
+
+            if (friendToAdd != null) {
+                User user = getCurrentUser();
+                if (!friendToAdd.equals(user)) {
+                    if (!user.getFriendsOf().contains(friendToAdd)) {
+                        user.getFriendsOf().add(friendToAdd);
+                        userDAO.updateUser(user);
+                        resultString = "Der Benutzer " + searchString + " wurde als Freund hinzugefügt!";
+                    } else {
+                        resultString = "Der Benutzer " + searchString + " ist bereits als Freund vorhanden.";
+                    }
+                } else {
+                    resultString = "Sie können sich nicht selbst als Freund hinzufügen.";
+                }
+            } else {
+                resultString = "Der Benutzer " + searchString + " konnte nicht als Freund hinzugefügt werden.";
+            }
+        }
+        setSearchString("");
         return resultString;
     }
 
@@ -52,40 +78,43 @@ public class FriendController {
     }
 
     public String getSearchString() {
-        if (!searchString.isEmpty()) {
-
-            User friendToAdd = userDAO.findUserByName(searchString);
-
-            if (friendToAdd != null) {
-                User user = getCurrentUser();
-                user.getFriendsOf().add(friendToAdd);
-                userDAO.updateUser(user);
-                resultString = "Der Benutzer " + searchString + " wurde als Freund hinzugefügt!";
-            } else {
-                resultString = "Der Benutzer " + searchString + " konnte nicht als Freund hinzugefügt werden.";
-            }
-        } else {
-            resultString = "";
-        }
-        return "";
+        return this.searchString;
     }
 
     public void setSearchString(String searchString) {
         this.searchString = searchString;
     }
 
-    public List<User> getFriends() {
+    public List<String> getFriends() {
 
         User user = getCurrentUser();
+        User possibleFriend = null;
 
-        if (this.friends == null) {
-            this.friends = new ArrayList<User>();
-        }
+        // reset current friends
+        this.friends = new ArrayList<>();
 
         if (user != null) {
             Set<User> friendsOfUser = user.getFriendsOf();
-            if (friendsOfUser != null) {
-                this.friends.addAll(friendsOfUser);
+
+            if (friendsOfUser.size() > 0) {
+                // get current online users
+                List<Object> principles = sessionRegistry.getAllPrincipals();
+
+                for (Object principle : principles) {
+                    if (principle instanceof User) {
+                        possibleFriend = userDAO.findUserByMailaddress(((User) principle).getEmail());
+
+                        // check if its a friend or not
+                        if (friendsOfUser.contains(possibleFriend)) {
+                            this.friends.add(possibleFriend.getName() + " ist Online");
+                            friendsOfUser.remove(possibleFriend);
+                        }
+                    }
+                } // end of principals
+
+                for (User friend : friendsOfUser) {
+                    this.friends.add(friend.getName() + " ist Offline");
+                }
             }
         }
 
@@ -101,6 +130,7 @@ public class FriendController {
      *
      * @return The user object of the current user
      */
+
     private User getCurrentUser() {
         User user = null;
 

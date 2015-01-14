@@ -22,14 +22,15 @@
                              header="Sammlung eigener Bilder"
                              style="margin-bottom:10px;">
 
-                        <h:panelGrid columns="1" style="width: 100% height: 800px">
+                        <h:panelGrid columns="1">
                             <p:galleria id="gallery" value="#{pictureController.images}" var="img"
-                                        panelWidth="533" panelHeight="400" frameWidth="60" frameHeight="100"
+                                        panelWidth="576" panelHeight="480" frameWidth="65" frameHeight="80"
                                         effect="clip">
 
                                 <p:graphicImage id="galleryimage"
                                                 value="#{pictureController.image}" title="#{img.name}"
-                                                alt="Beschreibugn für #{img.name}">
+                                                alt="Beschreibugn für #{img.name}"
+                                                style="max-height: 480px; max-width: 576px">
                                     <f:param name="id" value="#{img.id}"/>
                                 </p:graphicImage>
                             </p:galleria>
@@ -62,14 +63,15 @@
                              header="Sammlung der Bilder von Freunden"
                              style="margin-bottom:10px;">
 
-                        <h:panelGrid columns="1" style="width: 100% height: 800px">
+                        <h:panelGrid columns="1">
                             <p:galleria id="friends_gallery" value="#{pictureController.friendsImages}" var="img"
-                                        panelWidth="533" panelHeight="400" frameWidth="60" frameHeight="60"
+                                        panelWidth="576" panelHeight="480" frameWidth="65" frameHeight="80"
                                         effect="clip">
 
                                 <p:graphicImage id="friends_galleryimage"
                                                 value="#{pictureController.image}" title="#{img.name}"
-                                                alt=" Beschreibung für #{img.name}">
+                                                alt=" Beschreibung für #{img.name}"
+                                                style="max-height: 480px; max-width: 576px">
                                     <f:param name="id" value="#{img.id}"/>
                                 </p:graphicImage>
                             </p:galleria>

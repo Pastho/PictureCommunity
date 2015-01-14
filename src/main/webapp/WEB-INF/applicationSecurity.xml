@@ -26,6 +26,11 @@
           p:passwordEncoder-ref="passwordEncoder"
           p:userDetailsService-ref="userDetailsService"/>
 
+    <bean id="sessionRegistry"
+          class="org.springframework.security.core.session.SessionRegistryImpl"/>
+
+    <bean id="myLogoutHandler" class="de.hska.iwii.picturecommunity.controller.LogoutController"/>
+
     <!-- Manager, der die Zugriffsregeln aus dem security:http-Tag auswertet -->
     <security:authentication-manager alias="authenticationManager">
         <security:authentication-provider ref="daoAuthenticationProvider"/>
@@ -45,6 +50,18 @@
                 login-page="/faces/pages/public/login.xhtml"
                 default-target-url="/faces/pages/public/start.xhtml"
                 authentication-failure-url="/faces/pages/public/login.xhtml"/>
+        <security:session-management>
+            <security:concurrency-control
+                    session-registry-ref="sessionRegistry" max-sessions="1"
+                    expired-url="/faces/pages/public/login.xhtml?expire"/>
+        </security:session-management>
+
+        <security:intercept-url pattern="/logoutSuccess"
+                                access="permitAll"/>
+
+        <security:logout logout-url="/j_spring_security_logout"
+                         success-handler-ref="myLogoutHandler"/>
+
         <security:intercept-url pattern="/faces/login.xhtml" access="permitAll"/>
         <security:intercept-url pattern="/faces/pages/private/**" access="hasRole('user') or hasRole('admin')"/>
         <security:intercept-url pattern="/faces/pages/admin/**" access="hasRole('admin')"/>

@@ -23,14 +23,14 @@
                          header="Sammlung öffentlicher Bilder"
                          style="margin-bottom:10px;">
 
-                    <h:panelGrid columns="1" style="width: 100% height: 800px">
+                    <h:panelGrid columns="1">
                         <p:galleria id="gallery" value="#{pictureController.publicImages}" var="img"
-                                    panelWidth="250" panelHeight="200" frameWidth="48" frameHeight="65"
+                                    panelWidth="576" panelHeight="480" frameWidth="65" frameHeight="80"
                                     effect="clip">
 
                             <p:graphicImage id="galleryimage"
                                             value="#{pictureController.image}" title="#{img.name}"
-                                            alt="#{img.name}">
+                                            alt="#{img.name}" style="max-height: 480px; max-width: 576px">
                                 <f:param name="id" value="#{img.id}"/>
                             </p:graphicImage>
                         </p:galleria>

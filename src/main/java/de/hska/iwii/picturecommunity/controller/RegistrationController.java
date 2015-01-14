@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,9 @@ import java.io.IOException;
 @Scope("session")
 @Qualifier("registerController")
 public class RegistrationController {
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @Autowired
     private UserDAO userDAO;
@@ -105,7 +109,8 @@ public class RegistrationController {
                 }
             }
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(inputUsername + " successfully registered"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Willkommen " + inputUsername));
+            sessionRegistry.registerNewSession(user.getName(), user);
         }
     }
 
